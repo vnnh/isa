@@ -1,0 +1,15 @@
+// ADD
+	// load r1 with 0x000F
+		3200	// lui  r1, 0x00
+		120F	// addi r1, 0x0F
+	// load r2 with 0x00F0
+		3400	// lui  r2, 0x00
+		14F0	// addi r2, 0xF0
+	// load r3 with 0x0100
+		3601	// lui  r3, 0x01
+	// add r4 = r1 + r2 = 0x00FF
+		0460	// add r4, r1, r2
+	// store r4 to [r3+0] = M[0x100]
+		68C0	// store r4, r3, 0
+// halt
+	0007	// halt
