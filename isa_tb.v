@@ -13,6 +13,7 @@ module isa_tb();
     always begin
         clk = 1'b0; #5;
         clk = 1'b1; #5;
+        // 10ns period = 100MHz
     end
 
     initial begin
@@ -28,6 +29,21 @@ module isa_tb();
         #20;
 
         validate(10'h100, 16'h00FF); // add
+        validate(10'h101, 16'h00E1); // sub
+        validate(10'h102, 16'h0000); // and
+        validate(10'h103, 16'h00FF); // or
+        validate(10'h104, 16'h00FF); // addi
+        validate(10'h105, 16'hFF01); // subi
+        validate(10'h106, 16'hF100); // lui
+        validate(10'h107, 16'h0F00); // slli
+        validate(10'h0FF, 16'h0F00); // store
+        validate(10'h0FE, 16'h0F00); // load
+        validate(10'h108, 16'h0001); // beq (false)
+        validate(10'h109, 16'h0001); // beq (true)
+        validate(10'h10A, 16'h0002); // blt (false)
+        validate(10'h10B, 16'h0002); // blt (true)
+        validate(10'h10C, 16'h0002); // j
+        validate(10'h10D, 16'h0004); // jr + jl test
 
         $display("PASSED ALL TESTS");
 

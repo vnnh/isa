@@ -1,4 +1,8 @@
-// ADD
+// INITIAL
+	// r1 = 0x000F
+	// r2 = 0x00F0
+	// r3 = 0x0100
+
 	// load r1 with 0x000F
 		3200	// lui  r1, 0x00
 		120F	// addi r1, 0x0F
@@ -7,9 +11,98 @@
 		14F0	// addi r2, 0xF0
 	// load r3 with 0x0100
 		3601	// lui  r3, 0x01
+
+// ADD
 	// add r4 = r1 + r2 = 0x00FF
 		0460	// add r4, r1, r2
 	// store r4 to [r3+0] = M[0x100]
 		68C0	// store r4, r3, 0
+// SUB
+	// sub r4 = r2 - r1 = 0x00E1
+		02A1	// sub r4, r2, r1
+	// store r4 to [r3+1] = M[0x101]
+		68C1	// store r4, r3, 1
+// AND
+	// and r4 = r1 & r2 = 0x0000
+		0462	// and r4, r1, r2
+	// store r4 to [r3+2] = M[0x102]
+		68C2	// store r4, r3, 2
+// OR
+	// or r4 = r1 | r2 = 0x00FF
+		0463	// or r4, r1, r2
+	// store r4 to [r3+3] = M[0x103]
+		68C3	// store r4, r3, 3
+
+// ADDI
+	// add r4, zero, zero
+		0020	// add r4, r0, r0
+	// addi r4 = r4 + 255
+		18FF	// addi r4, 255
+	// store r4 to [r3+4] = M[0x104]
+		68C4	// store r4, r3, 4
+// SUBI
+	// add r4, zero, zero
+		0020	// add r4, r0, r0
+	// subi r4 = r4 - 255
+		28FF	// subi r4, 255
+	// store r4 to [r3+5] = M[0x105]
+		68C5	// store r4, r3, 5
+// LUI
+	// add r4, zero, zero
+		0020	// add r4, r0, r0
+	// lui r4 = 0xF100
+		38F1	// lui r4, 0xF1
+	// store r4 to [r3+6] = M[0x106]
+		68C6	// store r4, r3, 6
+// SLLI
+	// r4 = 0x00f0
+		4848	// slli r4, r1, 8
+	// store r4 to [r3+7] = M[0x107]
+		68C7	// store r4, r3, 7
+// STORE - store r3 to M[0x0FF]
+	// store r4 to [r3-1] = M[0x0FF]
+		68FF	// store r4, r3, -1
+// LOAD - load M[0x0FF] and store it into [0x0FE]
+	// load M[0x0FF] into r4
+		58FF	// load r4, r3, -1
+	// store r4 to [r3-2] = M[0x0FE]
+		68FE	// store r4, r3, -2
+
+// from here, all tests rely on an incrementing value of r5
+// BEQ
+	// TEST BEQ FALSE BRANCH; r5 should be 1
+		9442 // beq r1, r2, 2
+		1A01 // addi r5, 1
+		6AC8 // store r5, r3, 8
+	// TEST BEQ TRUE BRANCH; r5 should still be 1
+		9242 // beq r1, r1, 2
+		1A01 // addi r5, 1 [SKIPPED]
+		1A01 // addi r5, 1 [SKIPPED]
+		6AC9 // store r5, r3, 9
+	// TEST BLT FALSE BRANCH; r5 should be 2
+		A242 // blt r1, r1, 2
+		1A01 // addi r5, 1
+		6ACA // store r5, r3, 10
+	// TEST BLT TRUE BRANCH; r5 should be 2
+		A442 // blt r1, r2, 2
+		1A01 // addi r5, 1 [SKIPPED]
+		1A01 // addi r5, 1 [SKIPPED]
+		6ACB // store r5, r3, 11
+
+// J; r5 should be 2
+	702B // instruction 0x29: j 0x2b; jump to store
+	1A01 // addi r5, 1 [SKIPPED]
+	6ACC // store r5, r3, 12
+// JL/JR; test for JL and JR by jl to an instruction that jr back, then store and jump to halt; r5 should be 4 at the end (add twice)
+	8030 // instruction 0x2c: jl 0x30
+	1A01 // addi r5, 1
+	6ACD // store r5, r3, 13
+	7032 // jump to halt
+	
+	//"function"
+		1A01 // instruction 0x30: addi r5, 1
+		0E04 // jr r7
+
+
 // halt
-	0007	// halt
+	0007	// instruction 0x32: halt
