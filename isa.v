@@ -26,10 +26,10 @@ module isa(input clk, input reset, output halted);
 
     wire [15:0] imm_sext;
     wire [15:0] imm_shifted;
-    wire [7:0] imm_8;
+	wire [15:0] imm_9;
     assign imm_sext = {{10{instr[5]}}, instr[5:0]};
     assign imm_shifted = {instr[7:0], 8'b0};
-    assign imm_8 = instr[7:0];
+	assign imm_9 = {7'b0, instr[8:0]};
     wire [15:0] alu_a, alu_b;
     wire [15:0] alu_out;
     wire alu_zero;
@@ -96,7 +96,7 @@ module isa(input clk, input reset, output halted);
     assign alu_a = ALUSrcA ? rt_data : rs_data;
     assign alu_b = {LType, ALUSrcB} == 2'b00 ? rt_data
     				: {LType, ALUSrcB} == 2'b01 ? imm_sext
-    				: {LType, ALUSrcB} == 2'b10 ? {8'b0, imm_8}
+    				: {LType, ALUSrcB} == 2'b10 ? imm_9
     				: {LType, ALUSrcB} == 2'b11 ? imm_shifted
         			: 16'hXXXX;
 
