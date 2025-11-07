@@ -50,18 +50,18 @@ module isa_tb();
         $finish;
     end
 
-	task validate(input [9:0] addr, input [15:0] expected_data);
-		begin : check_task
-			reg [15:0] observed_data;
-	        observed_data = uut.dmem.mem[addr];
-	        if (observed_data !== expected_data) begin
-	            $display("FAIL: M[0x%h]", addr);
-	            $display("	Expected: 0x%h", expected_data);
-				$display("	Found: 0x%h", observed_data);
-	            $finish;
-	        end else begin
-	            $display("PASS: M[0x%h] == 0x%h", addr, observed_data);
-	        end
-		end
+    task validate(input [9:0] addr, input [15:0] expected_data);
+        begin : check_task
+            reg [15:0] observed_data;
+            observed_data = uut.dmem.mem[addr];
+            if (observed_data !== expected_data) begin
+                $display("FAIL: M[0x%h]", addr);
+                $display("	Expected: 0x%h", expected_data);
+                $display("	Found: 0x%h", observed_data);
+                $finish;
+            end else begin
+                $display("PASS: M[0x%h] == 0x%h", addr, observed_data);
+            end
+        end
     endtask
 endmodule

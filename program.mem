@@ -93,7 +93,7 @@
 	702B // instruction 0x29: j 0x2b; jump to store
 	1A01 // addi r5, 1 [SKIPPED]
 	6ACC // store r5, r3, 12
-// JL/JR; test for JL and JR by jl to an instruction that jr back, then store and jump to halt; r5 should be 4 at the end (add twice)
+// JL/JR
 	8030 // instruction 0x2c: jl 0x30
 	1A01 // addi r5, 1
 	6ACD // store r5, r3, 13

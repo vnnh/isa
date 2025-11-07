@@ -1,20 +1,20 @@
 module isa(input clk, input reset, output halted);
-	wire Halt;
-	assign halted = Halt;
-	wire Jump;
-	wire BLT;
-	wire JR;
-	wire Branch;
-	wire LType;
-	wire ALUSrcA;
-	wire ALUSrcB;
-	wire JLink;
-	wire WBSrc;
-	wire Load;
-	wire Store;
-	wire [3:0] ALUOp;
-	wire WB;
-	wire WBReg;
+    wire Halt;
+    assign halted = Halt;
+    wire Jump;
+    wire BLT;
+    wire JR;
+    wire Branch;
+    wire LType;
+    wire ALUSrcA;
+    wire ALUSrcB;
+    wire JLink;
+    wire WBSrc;
+    wire Load;
+    wire Store;
+    wire [3:0] ALUOp;
+    wire WB;
+    wire WBReg;
 
     wire [9:0]  pc_out, pc_in;
     wire [15:0] instr;
@@ -66,19 +66,19 @@ module isa(input clk, input reset, output halted);
         .fn(fn),
         .Halt(Halt),
         .Jump(Jump),
-		.BLT(BLT),
-		.JR(JR),
-		.Branch(Branch),
-		.LType(LType),
-		.ALUSrcA(ALUSrcA),
-		.ALUSrcB(ALUSrcB),
-		.JLink(JLink),
-		.WBSrc(WBSrc),
-		.Load(Load),
-		.Store(Store),
-		.ALUOp(ALUOp),
-		.WB(WB),
-		.WBReg(WBReg)
+        .BLT(BLT),
+        .JR(JR),
+        .Branch(Branch),
+        .LType(LType),
+        .ALUSrcA(ALUSrcA),
+        .ALUSrcB(ALUSrcB),
+        .JLink(JLink),
+        .WBSrc(WBSrc),
+        .Load(Load),
+        .Store(Store),
+        .ALUOp(ALUOp),
+        .WB(WB),
+        .WBReg(WBReg)
     );
 
     register_file reg_file (
@@ -95,10 +95,10 @@ module isa(input clk, input reset, output halted);
 
     assign alu_a = ALUSrcA ? rt_data : rs_data;
     assign alu_b = {LType, ALUSrcB} == 2'b00 ? rt_data
-    				: {LType, ALUSrcB} == 2'b01 ? imm_sext
-    				: {LType, ALUSrcB} == 2'b10 ? imm_9
-    				: {LType, ALUSrcB} == 2'b11 ? imm_shifted
-        			: 16'hXXXX;
+        : {LType, ALUSrcB} == 2'b01 ? imm_sext
+        : {LType, ALUSrcB} == 2'b10 ? imm_9
+        : {LType, ALUSrcB} == 2'b11 ? imm_shifted
+        : 16'hXXXX;
 
     alu alu_mod (
         .a(alu_a),
@@ -121,13 +121,13 @@ module isa(input clk, input reset, output halted);
     wire PCMuxB;
     assign PCMuxB = (Branch && (BLT ? alu_neg : alu_zero)) || JR;
     assign pc_in = {Jump, PCMuxB} == 2'b00 ? pc_plus_1
-    				: {Jump, PCMuxB} == 2'b01 ? branch_target
-    				: {Jump, PCMuxB} == 2'b10 ? instr[9:0]
-    				: {Jump, PCMuxB} == 2'b11 ? rt_data
-        			: pc_plus_1;
+        : {Jump, PCMuxB} == 2'b01 ? branch_target
+        : {Jump, PCMuxB} == 2'b10 ? instr[9:0]
+        : {Jump, PCMuxB} == 2'b11 ? rt_data
+        : pc_plus_1;
 
 	assign rd_data = {JLink, WBSrc} == 2'b00 ? mem_read_data
-						: {JLink, WBSrc} == 2'b01 ? alu_out
-						: {JLink, WBSrc} == 2'b10 ? pc_plus_1
-						: 16'hXXXX;
+        : {JLink, WBSrc} == 2'b01 ? alu_out
+        : {JLink, WBSrc} == 2'b10 ? pc_plus_1
+        : 16'hXXXX;
 endmodule

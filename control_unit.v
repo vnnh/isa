@@ -1,7 +1,9 @@
 module control_unit(
 	input[3:0] opcode,
 	input[2:0] fn,
-	output reg Halt, Jump, BLT, JR, Branch, LType, ALUSrcA, ALUSrcB, JLink, WBSrc, Load, Store, WB, WBReg, [3:0] ALUOp
+	output reg Halt,
+        Jump, BLT, JR, Branch, LType, ALUSrcA, ALUSrcB,
+        JLink, WBSrc, Load, Store, WB, WBReg, [3:0] ALUOp
 );
 	localparam ALU_ADD = 4'b0000;
 	localparam ALU_SUB = 4'b0001;
@@ -16,7 +18,8 @@ module control_unit(
 		Branch = 1'b0;
 		JR = 1'b0;
 		Halt = 1'b0;
-		LType = 1'b0; //0: rt or sign-extended, 1: upper/lower 8-bit immediate
+		LType = 1'b0; //0: rt or sign-extended,
+			      //1: upper/lower 8-bit immediate
 		ALUSrcA = 1'b0; // 0: rs, 1: rt
 		ALUSrcB = 1'b0; // 1: use shifted/sign-extended
 		JLink = 1'b0; // 1: use pc value
@@ -46,7 +49,7 @@ module control_unit(
 						WB = 1'b0;
 						Halt = 1'b1;
 					end
-					default: WB = 1'b0; // noop if undefined case
+					default: WB = 1'b0; // noop
 				endcase
 			end
 
