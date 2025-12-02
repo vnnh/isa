@@ -3,7 +3,7 @@ module control_unit(
 	input[2:0] fn,
 	output reg Halt,
         Jump, BLT, JR, Branch, LType, ALUSrcA, ALUSrcB,
-        JLink, WBSrc, Load, Store, WB, WBReg, [3:0] ALUOp
+        JLink, WBSrc, Load, Store, WB, WBReg, output reg [3:0] ALUOp
 );
 	localparam ALU_ADD = 4'b0000;
 	localparam ALU_SUB = 4'b0001;

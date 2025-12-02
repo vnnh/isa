@@ -1,5 +1,5 @@
 module data_memory(input clk, Load, Store,
-        [9:0] addr, [15:0] write_data, output [15:0] read_data);
+        input [9:0] addr, input [15:0] write_data, output [15:0] read_data);
     reg [15:0] mem [1023:0];
 
     integer i;

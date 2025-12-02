@@ -1,4 +1,4 @@
-module alu(input [15:0] a, [15:0] b, [3:0] alu_op,
+module alu(input [15:0] a, input [15:0] b, input[3:0] alu_op,
         output reg [15:0] result, output zero, neg);
     localparam ALU_ADD = 4'b0000;
     localparam ALU_SUB = 4'b0001;

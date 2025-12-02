@@ -1,3 +1,10 @@
 work/*
 *.mpf
 *.mti
+db
+incremental_db
+output_files
+simulation
+*.bak
+*.qpf
+*.qsf
